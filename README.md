@@ -335,3 +335,65 @@ Don't have to define quantiles ahead of time
 
 Response Time(20% = .3s, 50% = 0.8s, 80% = 1s) what summary's going to do is it's going to give us percentages?<br/>
 Request Size(20% = 50Mb, 50% = 200Mb, 80% = 500Mb)
+
+
+### Metrics Rules
+
+Metric name specifies a general feature of a system to be measured.<br/>
+May contain ASCII letters, numbers, underscores, and colons.<br/>
+Must match the regex [a-zA-Z_:][a-zA-Z0-9_:]*<br/>
+Colons are reserved only for recording rules<br/>
+
+#### Labels
+
+labels are Key-Value pairs associated with a metric.<br/>
+Allows you to split up a metric by a specified criteria<br/>
+Metric can have more than one label<br/>
+ASCII leters, numbers, underscores<br/>
+Must match regex[a-zA-Z0-9_]*<br/>
+
+Example: cpu=0, cpu=1, cpu=2, cpu=3, fs=/data. fs=/root, fs=/dev, fs=/run
+
+Why would we want to use labels?
+
+Difficult to calculate total requests across all paths
+
+Example:
+
+/auth  <==> requests_auth_total<br/>
+/user <==> requests_user_total<br/>
+/products <==> requests_products_total<br/>
+/cart <==> requests_cart_total<br/>
+/orders <==> request_orders_total<br/>
+
+Insted you have to calculate Sum all requests: sum(requests_total) using the below using path<br/>
+
+requests_total{path=/auth}<br/>
+requests_total{path=/user}<br/>
+requests_total{path=/products}<br/>
+requests_total{path=/cart}<br/>
+requests_total{path=/orders}<br/>
+
+
+### Multiple Labels
+
+paricular endpoint with multiple HTTP methods calls
+
+requests_total{path=/auth.method=get}<br/>
+requests_total{path=/auth.method=post}<br/>
+requests_total{path=/auth.method=patch}<br/>
+requests_total{path=/auth.method=delete}<br/>
+
+### Internal Labels
+
+Metric name is just another label
+
+node_cpu_seconds_total{cpu=0} = {__name__=node_cpu_seconds_total,cpu=0}<br/>
+label surrounded by two underscore are considered internal to prometheus.<br/>
+
+### Labels
+
+Every metric is assigned 2 labels by default(instance and job)<br/>
+node_boot_time_seconds{instance="192.168.1.168:9100",job="node"}<br/>
+Here instance is represent targets and job is job_name in the config.yaml file.<br/>
+
