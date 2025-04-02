@@ -1,5 +1,27 @@
 # Prometheus Architecutre
 
+
+
+![image](https://github.com/user-attachments/assets/aeefcb83-698a-4ed8-be3d-df6a9e86b1e7)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Prometheus main components
 
 1. `Retrieval` : Scrapes metric data
