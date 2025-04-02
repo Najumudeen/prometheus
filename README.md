@@ -48,11 +48,14 @@ so that prometheus is able to scrap that data
 
 Prometheus has several native exporters
 
-  1. Node Exporters(Linux servers)
-  2. Windows
-  3. MySQL
-  4. Apache
-  5. HAProxy
+|     Native Exporter            | 
+|--------------------------------
+|  Node Exporters(Linux servers) |
+|  Windows                       |
+|  Mysql                         | 
+|  Apache                        | 
+|  HAProxy                       |
+
 
 Client Libraries
 
