@@ -1,0 +1,97 @@
+Add Prometheus user as below:
+
+useradd --no-create-home --shell /bin/false prometheus
+
+Create Directories for storing prometheus config file and data:
+
+mkdir /etc/prometheus
+mkdir /var/lib/prometheus
+Change the permissions:
+
+chown prometheus:prometheus /etc/prometheus
+chown prometheus:prometheus /var/lib/prometheus
+
+Copy the binaries:
+
+cp /root/prometheus-2.40.1.linux-amd64/prometheus /usr/local/bin/
+cp /root/prometheus-2.40.1.linux-amd64/promtool /usr/local/bin/
+Change the ownership of binaries:
+
+chown prometheus:prometheus /usr/local/bin/prometheus
+chown prometheus:prometheus /usr/local/bin/promtool
+Copy the directories consoles and console_libraries:
+
+cp -r /root/prometheus-2.40.1.linux-amd64/consoles /etc/prometheus
+cp -r /root/prometheus-2.40.1.linux-amd64/console_libraries /etc/prometheus
+Change the ownership of directories consoles and console_libraries:
+
+chown -R prometheus:prometheus /etc/prometheus/consoles
+chown -R prometheus:prometheus /etc/prometheus/console_libraries
+Move prometheus.yml file to /etc/prometheus directory:
+
+cp /root/prometheus-2.40.1.linux-amd64/prometheus.yml /etc/prometheus/prometheus.yml
+Change the ownership of file /etc/prometheus/prometheus.yml:
+
+chown prometheus:prometheus /etc/prometheus/prometheus.yml
+Create a service for prometheus:
+
+vi /etc/systemd/system/prometheus.service
+Add below lines in it:
+
+[Unit]
+Description=Prometheus
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Type=simple
+ExecStart=/usr/local/bin/prometheus \
+    --config.file /etc/prometheus/prometheus.yml \
+    --storage.tsdb.path /var/lib/prometheus/ \
+    --web.console.templates=/etc/prometheus/consoles \
+    --web.console.libraries=/etc/prometheus/console_libraries
+
+[Install]
+WantedBy=multi-user.target
+Run below commands:
+
+systemctl daemon-reload
+systemctl start prometheus
+systemctl enable prometheus
+systemctl status prometheus
+
+
+
+SSH to node0
+
+ssh root@node
+Install apache2-utils package:
+
+apt update
+apt install apache2-utils -y
+Generate password hash:
+
+htpasswd -nBC 10 "" | tr -d ':\n'; echo
+It will ask for the password twice as below (enter password secret-password twice):
+
+New password: 
+Re-type new password: 
+Finally, you will get a hashed value of your password.
+Edit /etc/node_exporter/config.yml file:
+
+vi /etc/node_exporter/config.yml
+Add below lines in it:
+
+basic_auth_users:
+  prometheus: <hashed-password>
+Restart node_exporter service
+
+systemctl restart node_exporter
+exit
+You can verify the changes using curl command:
+
+curl http://node:9100/metrics
+return output should be Unauthorized
+
