@@ -240,16 +240,17 @@ systemctl restart prometheus
   node_cpu_seconds_total{cpu="0",mode="idle"} 258277.86
 
  Labels (cpu 0,1,2,3) provide us information on which cpu this metric is for what `cpu state(idle)`.
-
+ 
+```
    node_cpu_seconds_total{cpu="0",mode="idle"} 258244.86
    node_cpu_seconds_total{cpu="1",mode="idle"} 428277.86
    node_cpu_seconds_total{cpu="2",mode="idle"} 288277.86
    node_cpu_seconds_total{cpu="3",mode="idle"} 258202.86
+```
 
+## Timestamp
 
-##Timestamp
-
-when Prometheus scraps a target and retrieves metrics, it alsp stores the time at which the metric was scraped as well.
+when Prometheus scraps a target and retrieves metrics, it also stores the time at which the metric was scraped as well.
 
 The time stamp will look like this: `1668215300`
 
@@ -259,11 +260,10 @@ This is called a unix timestamp, which is the number of seconds that have elapse
 
 Stream of timestamped values sharing the same metric and set of labels.
 
-
 Any Metric with a unique set of labels, as we collect data for that over time that's going to be just called a `time series`.
 
+```
 Example:
-
    node_filesystem_files{device="sda2", instance="server1}  ................. series1
    node_filesystem_files{device="sda3", instance="server1}  ................. series2
    node_filesystem_files{device="sda2", instance="server2}  ................. series3
@@ -273,6 +273,7 @@ Example:
    node_cpu_seconds_total{cpu="1", instance="server1"}  ................. series6
    node_cpu_seconds_total{cpu="0", instance="server2"}  ................. series7
    node_cpu_seconds_total{cpu="1", instance="server2"}  ................. series8
+```
 
 There are two metrics(node_filesystem_files, node_cpu_seconds_total)
 There are 8 total time series(unique combination of metrics and set of labels)
@@ -281,7 +282,7 @@ There are 8 total time series(unique combination of metrics and set of labels)
 
 Metrics have a TYPE and HELP attributes
 
-[!TIPS]
-HELP - description of what the metrics is
-TYPE - Specifies what type of metric(counter, gauge, histogram, summary)
+> [!NOTE]
+> HELP - description of what the metrics is TYPE - Specifies what type of metric(counter, gauge, histogram, summary)
+
 
