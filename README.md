@@ -289,3 +289,50 @@ Metrics have a TYPE and HELP attributes
 > HELP - description of what the metrics is TYPE - Specifies what type of metric(counter, gauge, histogram, summary)
 
 
+### Metrics Type
+
+1. `Counter`
+2. `Gauge`
+3. `Histogram`
+4. `Summary`
+
+
+##### Counter
+
+How many times did X happen
+Number can only increase
+
+Good for
+
+Total # Requests
+Total # Exceptions
+Total # of job executions
+
+##### Gauge
+
+What is the current value of X
+Can go up or down depending on the current metrics value is
+
+Current CPU Utilization
+Available System Memory
+Number of concurrent requests
+
+##### Histogram
+
+How long or how big something is
+Groups observations into configurable bucket sizes.
+
+You want to track?
+
+Respone Time (< 1s < 0.5s < 0.2s ) How many total request completed within less than 0.5 seconds
+Request Size (< 1500Mb, < 1000Mb, < 800Mb) that fell under 1,000 megabytes, what was the total number of requests that fell under 1,500 megabytes?
+
+
+##### Summary
+
+Similar to histograms(track how long or how big)
+How many observations fell below x
+Don't have to define quantiles ahead of time
+
+Response Time(20% = .3s, 50% = 0.8s, 80% = 1s) what summary's going to do is it's going to give us percentages?
+Request Size(20% = 50Mb, 50% = 200Mb, 80% = 500Mb)
