@@ -1,11 +1,11 @@
 # Prometheus Architecutre
 ------------------------
 
- - it's main components
+## Prometheus main components
 
-    1. Retrieval => Scrapes metric data
-    2. TSDB => Stroes metrics data
-    3. HTTP Server => Accepts PromQL Query
+    1. `Retrieval`: Scrapes metric data
+    2. `TSDB`: Stroes metrics data
+    3. `HTTP Server`: Accepts PromQL Query
 
 Exporters => Prometheus Targets
 
