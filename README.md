@@ -3,9 +3,9 @@
 
 ## Prometheus main components
 
-    1. `Retrieval`: Scrapes metric data
-    2. `TSDB`: Stroes metrics data
-    3. `HTTP Server`: Accepts PromQL Query
+1. `Retrieval` : Scrapes metric data
+2. `TSDB` : Stroes metrics data
+3. `HTTP Server` : Accepts PromQL Query
 
 Exporters => Prometheus Targets
 
@@ -59,22 +59,22 @@ Prometheus has several native exporters
 
 Client Libraries
 
-Can we monitro application metrics
+Can we monitror application metrics
 
-  1. Number of errors/exceptions
-  2. Latency of requests
-  3. Job execution time
+1. Number of errors/exceptions
+2. Latency of requests
+3. Job execution time
 
 Prometheus comes with client libraries that allow you to expose any application metrics you need prometheus to track.
 
-Language support:
-----------------
+|     Language support       | 
+|-----------------------------
+|      Go                    |
+|      Java                  |
+|      Pyhton                |
+|      Ruby                  |
+|      Rust                  |
 
-Go
-Java
-Pyhton
-Ruby
-Rust
 
 Pull Based Model
 -----------------
