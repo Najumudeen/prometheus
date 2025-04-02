@@ -297,42 +297,41 @@ Metrics have a TYPE and HELP attributes
 4. `Summary`
 
 
-##### Counter
+#### <ins>Counter</ins>
 
-How many times did X happen
-Number can only increase
+How many times did X happen<br/>
+Number can only increase<br/>
 
 Good for
 
-Total # Requests
-Total # Exceptions
-Total # of job executions
+Total # Requests<br/>
+Total # Exceptions<br/>
+Total # of job executions<br/>
 
-##### Gauge
+#### <ins>Gauge</ins>
 
-What is the current value of X
+What is the current value of X<br/>
 Can go up or down depending on the current metrics value is
 
-Current CPU Utilization
-Available System Memory
-Number of concurrent requests
+Current CPU Utilization<br/>
+Available System Memory<br/>
+Number of concurrent requests<br/>
 
-##### Histogram
+#### <ins>Histogram</ins>
 
-How long or how big something is
-Groups observations into configurable bucket sizes.
+How long or how big something is<br/>
+Groups observations into configurable bucket sizes.<br/>
 
-You want to track?
+You want to track?<br/>
 
-Respone Time (< 1s < 0.5s < 0.2s ) How many total request completed within less than 0.5 seconds
-Request Size (< 1500Mb, < 1000Mb, < 800Mb) that fell under 1,000 megabytes, what was the total number of requests that fell under 1,500 megabytes?
+Respone Time (< 1s < 0.5s < 0.2s ) How many total request completed within less than 0.5 seconds.<br/>
+Request Size (< 1500Mb, < 1000Mb, < 800Mb) that fell under 1,000 megabytes, what was the total number of requests that fell under 1,500 megabytes?<br/>
 
-
-##### Summary
+#### <ins>Summary</ins>
 
 Similar to histograms(track how long or how big)
 How many observations fell below x
 Don't have to define quantiles ahead of time
 
-Response Time(20% = .3s, 50% = 0.8s, 80% = 1s) what summary's going to do is it's going to give us percentages?
+Response Time(20% = .3s, 50% = 0.8s, 80% = 1s) what summary's going to do is it's going to give us percentages?<br/>
 Request Size(20% = 50Mb, 50% = 200Mb, 80% = 500Mb)
