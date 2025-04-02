@@ -120,7 +120,7 @@ sudo cp config.yml /etc/node_exporter
 chown -R node_exporter:node_exporter /etc/node_exporter
 ```
 
-# Create node exporter service file
+## Create node exporter service file
 
 vi /etc/systemd/system/node_exporter.service
 
@@ -142,24 +142,22 @@ curl -k https://localhost:9100/metrics
 
 Error will gone
 
-Prometheus TLS Config
----------------------
+## Prometheus TLS Config
 
 First thing, you have to copy node_exporter.crt Prometheus Server
 
-# Use Scp to copy the file over
+### Use scp to copy the file over
 
 scp username:password@node:/etc/node_exporter/node_exporter.crt /etc/prometheus
 
-# change the ownership of the file
+### change the ownership of the file
 
 chown prometheus:prometheus node_exporter.crt
-
-vi /etc/prometheus/prometheus.yml
 
 Then update the configuration
 
 ```
+vi /etc/prometheus/prometheus.yml
 scrape_configs:
   - job_name: "node"
     scheme: https
@@ -168,20 +166,17 @@ scrape_configs:
       insecure_skip_verify: true  # Only needed for self signed certs
     static_configs:
       - targets: [ "192.168.1.168:9100" ]
-
 ```
 
 ```
 systemctl restart prometheus
 ```
 
-Prometheus Authentication
+## Prometheus Authentication
 
-## Generate Hash Password
+### Generate Hash Password
 
-
-Hashing
-
+### Hashing
 
 Install apache2-utils or httpd-tools
 
