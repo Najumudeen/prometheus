@@ -127,10 +127,9 @@ chown -R node_exporter:node_exporter /etc/node_exporter
 
 # Create node exporter service file
 
-
 vi /etc/systemd/system/node_exporter.service
 
-Link to the file content: [Link File](#node_exporter.service)
+Use the file context: [node_exporter.service](node_exporter.service)
 
 systemctl daemon-reload
 
