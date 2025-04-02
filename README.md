@@ -85,45 +85,50 @@ Prometues   <>====>  target
 
 
 Authentication & Encryption
----------------------------
+
 
 Encypt the packets.
 
 Node Exporter TLS
------------------
 
 Using open SSL to generate self-signed certificates or use encrpyt or veersion
 
-[!COMMAND]
+```
 sudo openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj \
 "/C=US/ST=California/L=Oakland/O=MyOrg/CN=localhost" -addext \
-"subjectAltName = DNS:localhost"
+"subjectAltName = DNS:localhost" ```
 
 it will generated 2 files
 
+```
 node_exporter.key
 node_exporter.crt
+```
 
 vi config.yml
 
+```
 tls_server_config:
   cert_file: node_exporter.crt
   key_file: node_exporter.key
+```
 
-# Update the node_exporter to use the cert file
+Update the node_exporter to use the cert file
 
 ./node_exporter --web.config=config.yml
 
 
 msg="TLS enabled"
 
+```
 sudo mkdir /etc/node_exporter
-
 mv node_exporter.* /etc/node_exporter
-
 sudo cp config.yml /etc/node_exporter
+```
 
+```
 chown -R node_exporter:node_exporter /etc/node_exporter
+```
 
 # Create node exporter service file
 
