@@ -366,7 +366,7 @@ Example:
 /cart <==> requests_cart_total<br/>
 /orders <==> request_orders_total<br/>
 
-Insted you have to calculate Sum all requests: sum(requests_total) using the below using path<br/>
+Instead you have to calculate Sum all requests: `sum(requests_total)` using the below using path<br/>
 
 requests_total{path=/auth}<br/>
 requests_total{path=/user}<br/>
@@ -379,16 +379,17 @@ requests_total{path=/orders}<br/>
 
 paricular endpoint with multiple HTTP methods calls
 
-requests_total{path=/auth.method=get}<br/>
-requests_total{path=/auth.method=post}<br/>
-requests_total{path=/auth.method=patch}<br/>
-requests_total{path=/auth.method=delete}<br/>
+requests_total{path=/auth,method=get}<br/>
+requests_total{path=/auth,method=post}<br/>
+requests_total{path=/auth,method=patch}<br/>
+requests_total{path=/auth,method=delete}<br/>
 
 ### Internal Labels
 
 Metric name is just another label
 
-node_cpu_seconds_total{cpu=0} = {__name__=node_cpu_seconds_total,cpu=0}<br/>
+```node_cpu_seconds_total{cpu=0} = {__name__=node_cpu_seconds_total,cpu=0}```
+
 label surrounded by two underscore are considered internal to prometheus.<br/>
 
 ### Labels
