@@ -95,9 +95,9 @@ node_exporter.key
 node_exporter.crt
 ```
 
+```
 vi config.yml
 
-```
 tls_server_config:
   cert_file: node_exporter.crt
   key_file: node_exporter.key
@@ -126,10 +126,10 @@ vi /etc/systemd/system/node_exporter.service
 
 Use the file context: [node_exporter.service](node_exporter.service)
 
+```
 systemctl daemon-reload
-
 systemctl restart node_exporter
-
+```
 
 curl https://localhost:9100/metrics
 
@@ -171,7 +171,9 @@ scrape_configs:
 
 ```
 
+```
 systemctl restart prometheus
+```
 
 Prometheus Authentication
 
@@ -187,7 +189,9 @@ Install apache2-utils or httpd-tools
 sudo apt install apache2-utils # install on your linux box
 ```
 
+```
 htpasswd -nBC 12 "" | tr -d ':\n'
+```
 
 ## Use Preferred Programming Language
 
@@ -210,11 +214,13 @@ tls_server_config:
   cert_file: node_exporter.crt
   key_file: node_exporter.key
 basic_auth_users:
-  prometheus: #@#$$#$%#$%$%      <username:hashpassword>
+  prometheus: #@#$$#$%#$%$%  <username:hashpassword>
 
 ```
 
+```
 systemctl restart node_exporter
+```
 
 Login to prometheus server
 
@@ -230,8 +236,10 @@ vi /etc/prometheus/prometheus.yml
     password: password  <plantext password>
 
 ```
-             
+
+```
 systemctl restart prometheus
+```
 
 ## Prometheus Metrics
 
