@@ -235,3 +235,53 @@ systemctl restart prometheus
 
 ## Prometheus Metrics
 
+<metric_name>[{<label_1="value_1>,<label_N="value_N">}]<metric_value>
+
+  node_cpu_seconds_total{cpu="0",mode="idle"} 258277.86
+
+ Labels (cpu 0,1,2,3) provide us information on which cpu this metric is for what `cpu state(idle)`.
+
+   node_cpu_seconds_total{cpu="0",mode="idle"} 258244.86
+   node_cpu_seconds_total{cpu="1",mode="idle"} 428277.86
+   node_cpu_seconds_total{cpu="2",mode="idle"} 288277.86
+   node_cpu_seconds_total{cpu="3",mode="idle"} 258202.86
+
+
+##Timestamp
+
+when Prometheus scraps a target and retrieves metrics, it alsp stores the time at which the metric was scraped as well.
+
+The time stamp will look like this: `1668215300`
+
+This is called a unix timestamp, which is the number of seconds that have elapsed since `Epoch(January 1st 1970 UTC)`.
+
+## Prometheus Time Series
+
+Stream of timestamped values sharing the same metric and set of labels.
+
+
+Any Metric with a unique set of labels, as we collect data for that over time that's going to be just called a `time series`.
+
+Example:
+
+   node_filesystem_files{device="sda2", instance="server1}  ................. series1
+   node_filesystem_files{device="sda3", instance="server1}  ................. series2
+   node_filesystem_files{device="sda2", instance="server2}  ................. series3
+   node_filesystem_files{device="sda3", instance="server2}  ................. series4
+                                                          Scrap Interval
+   node_cpu_seconds_total{cpu="0", instance="server1"}  ................. series5
+   node_cpu_seconds_total{cpu="1", instance="server1"}  ................. series6
+   node_cpu_seconds_total{cpu="0", instance="server2"}  ................. series7
+   node_cpu_seconds_total{cpu="1", instance="server2"}  ................. series8
+
+There are two metrics(node_filesystem_files, node_cpu_seconds_total)
+There are 8 total time series(unique combination of metrics and set of labels)
+
+## Metric Attributes
+
+Metrics have a TYPE and HELP attributes
+
+[!TIPS]
+HELP - description of what the metrics is
+TYPE - Specifies what type of metric(counter, gauge, histogram, summary)
+
