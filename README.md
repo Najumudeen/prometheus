@@ -323,6 +323,7 @@ Metrics have a TYPE and HELP attributes
 
 How many times did X happen<br/>
 Number can only increase<br/>
+For this a counter metric would be used as it would count the number of seconds a process has been running for. The uptime of a process can never go down, so a gauge metric shouldn’t be used.<br/>
 
 Good for
 
@@ -341,8 +342,7 @@ Number of concurrent requests<br/>
 
 #### <ins>Histogram</ins>
 
-How long or how big something is<br/>
-Groups observations into configurable bucket sizes.<br/>
+Histograms should be used to calculate how long or how big something is and allows you to group observations into configurable bucket sizes.<br/>
 
 You want to track?<br/>
 
@@ -419,4 +419,49 @@ label surrounded by two underscore are considered internal to prometheus.<br/>
 Every metric is assigned 2 labels by default(instance and job)<br/>
 node_boot_time_seconds{instance="192.168.1.168:9100",job="node"}<br/>
 Here instance is represent targets and job is job_name in the config.yaml file.<br/>
+Each unique combination of metrics & labels is a separate time series.<br/>
+
+### How Setup Prometheus on Docker container?
+
+```
+docker run -d /path-to/prometheus-docker.yml:/etc/prometheus/prometheus.yml -p 9090:9090 prom/prometheus
+```
+
+Default port Prometheus listen on 9090.
+
+### What is Promtools?
+
+Promtools is a utility tool shipped with Prometheus that can be used to:
+
+Check and validate configuration<br/>
+  Validate Prometheus.yml<br/>
+  validate rules files<br/>
+
+Validate metric passed to it are correctley formatted.
+Can Perform queries on a Prometheus server.
+Debugging & Profiling a Prometheus server.
+Perform unit tests against Recording/Alerting rules.
+
+```
+promtool check config /etc/prometheus/prometheus.yml
+
+Checking prometheus.yml
+ SUCCESS: prometheus.yml is valid prometheus config file syntax
+
+```
+
+Prometheus configs can now be validated before applying them to a production server.
+
+This will prevent any unnecessary downtime while config issues are being identified.
+
+As we progress through this course, we will cover all of the other features promtools has to offer.
+
+
+Monitoing Container with `cadvisor` 
+
+
+
+
+
+
 
