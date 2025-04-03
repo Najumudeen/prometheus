@@ -27,10 +27,15 @@
 - [Prometheus Metrics](#prometheus-metrics)
 - [Metric Attributes](#metric-attributes)
     - [Metrics Type](#metrics-type)
-    - [Metrics Rules[(#metrics-rules)
+    - [Metrics Rules](#metrics-rules)
 - [How Setup Prometheus on Docker container](#how-setup-prometheus-on-docker-container)
 - [What is Promtools](#what-is-promtools)
 - [PromQL](#promql)
+    - [PromQL Data Types](#promql-data-types)
+    - [Selectors](#selectors)
+    - [Matchers](#matchers)
+- [Aggregation](#aggregation)
+      
 
 ## Prometheus main components
 
@@ -918,7 +923,7 @@ Group_right is the opposite of group_left, tells PromQL that elements from the l
 
   ```
 
-  ### Aggregation
+  ## Aggregation
 
   Aggregation operators, allow you to take an instant vector and aggregate its elements, resulting in a new instant vector, with fewer elements.
 
