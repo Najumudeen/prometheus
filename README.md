@@ -617,15 +617,17 @@ node_memory_Active_bytes{instance="node01"}offset 5m
 
 ### Time units
 
-|    Suffix        |    Meaning           |
-------------------------------------------
-| ms               |    Milliseconds      |
-| s                |    Seconds           |
-| m                |    Minutes           |
-| h                |    Hours             |
-| d                |    Days              |
-| w                |    Weeks             |
+
+|    Suffix        |    Meaning                    |
+|   :-----         |   :-----                      |
+| ms               |    Milliseconds               |
+| s                |    Seconds                    |
+| m                |    Minutes                    |
+| h                |    Hours                      |
+| d                |    Days                       |
+| w                |    Weeks                      |
 | y                |    Years, which have 365 days |
+
 
 ####  5 days ago
 
