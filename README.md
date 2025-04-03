@@ -1009,3 +1009,143 @@ Aggregate on every label except `path`. The equivalent to `by(instance, method)`
 sum by(instance, cpu) (node_cpu_seconds_total)
 sum without(cpu, mode) (node_cpu_seconds_total)
 ```
+
+How find the total number of seconds cpu has spent in user + system mode for instance nodename:port?
+
+To get the total time spent in user+system mode, run the query node_cpu_seconds_total{instance="nodename:port", mode="user"} + node_cpu_seconds_total{instance="nodename:port", mode="system"}, but this query will return no results, because the vector on the left will look for a vector on the right of the “+” operation, that matches the same labels. Since the vector on the left has mode="user" and vector on the right has mode="system", there will be no matches. So we have to ignore the mode label by adding an ignoring(mode). The final query will look like as below:
+
+```
+node_cpu_seconds_total{instance="nodename:port", mode="user"} + ignoring(mode) node_cpu_seconds_total{instance="nodename:port", mode="system"}
+```
+
+## Functions
+
+PromQL has several difference function for a variety of use cases including `sorting, math, label transformation, metric manipulation and many more as well.
+
+
+### <ins>Math Function</ins>
+
+
+```
+node_cpu_seconds_total
+{cpu="0", mode="idle}   115.12
+
+ceil(node_cpu_seconds_total)     ceil rounds up to the closest integer.
+{cpu="0", mode="idle}   116
+
+floor(node_cpu_seconds_total)    floor rounds down to the closest integer.
+{cpu="0", mode="idle}   115
+
+abs(1-node_cpu_seconds_total)    abs means absolute value, abs returns absolute value
+{cpu="0", mode="idle}   115.12  
+
+```
+
+### <ins>Data and Time Functions</ins>
+
+```
+$ time()                  time function return current time
+  16666234475
+
+$ time() - process_start_time_seconds                                if you want to see how long your processes have been running
+  process_start_time_seconds(instance="node")      1109175.01
+
+```
+
+Prometheus provides functions to provide users information on what day of the week it is, what month, year etc.
+
+if the current time is 16:02 Thursday April 3rd, 2025 UTC timezone
+
+|  Expression     |   Result  |
+|   :-----        |   :-----  |
+|  Minute()       |  {}02     |
+|  Hour()         |  {}16     |
+|  Day_of_week()  |  {}4      |
+|  Day_of_month() |  {}03     |
+|  Days_in_month()|  {}30     |
+|  Month()        |  {}04     |
+|  Year()         |  {}2025   |
+
+### Changing Type
+
+The vector function takes a scalar value and converts it into an instant vector
+
+```
+$ vector(4)
+  {} 4
+```
+
+Given a single element input vector, scalar function returns the sample value of the single element as a `scalar`.
+if the value vector does not have exactly, it returns a `NaN`.
+
+```
+$ process_start_time_seconds
+  process_start_time_seconds{instance="node1}       1662763800
+
+$ scalar(process_start_time_seconds)
+   scalar    1662763800
+
+```
+
+if more than 2 instant vector you are trying to convert to scalar getting valie `scalar NaN`.
+
+### Sorting Functions
+
+Elements can be sorted with sort and sort_desc
+
+```
+$ sort(node_filesystem_avail_bytes)
+
+$ sort_desc(node_filesystem_avail_bytes)
+
+```
+
+### Rate
+
+A plot of counter metric does not show anything useful. We expect counters to increase ovet time.
+
+Instead we are more interested in the rate at which a counter metric increases.
+
+The rata() and irate() function provides the per second average rate of change.
+
+```
+rate(http_errors[1m])   How we are trying to group together
+```
+
+We will take last data point and substract with first data point.
+
+3.3 - 1.2 = 2.1 
+            --- = 0.035
+            60s
+
+0.035   0.0383   0.041
+
+
+### IRate
+
+```
+$ irate(http_errors[1m])
+
+```
+
+instead take first and last data point will take last 2 data points in the group.
+
+
+#### RATE
+
+1. `Looks at the first and last data points with in range`
+2. `Effectively an average rate over the range`
+3. `Best used for sloe moving counters and alerting rules`
+
+#### IRATE
+
+1. `Looks at the last two data points within a ranges`
+2. `Instant rate`
+3. `Should be used for graphing volatile, fast-moving counters`
+
+## Subqueries
+
+
+
+## Histogram/Summary
+
