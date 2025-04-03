@@ -460,8 +460,141 @@ As we progress through this course, we will cover all of the other features prom
 Monitoing Container with `cadvisor` 
 
 
+### PromQL
+
+What is PromQL?
+
+Short for Prometheus QUery Language
+Main way to query metrics within Prometheus
+Data returned can be visualized in dashboards.
+Used to build alerting rules to notify administrators.
+
+### Section Outline
+
+Expression Data Structure<br/>
+Selectors & modifiers<br/>
+Operators & Functions<br/>
+Vector Matching<br/>
+Aggregators<br/>
+Subqueries<br/>
+Histogram/Summary<br/>
 
 
+### PromQL Data Types
+
+A PromQL expression can evaluate to one of four types:
+
+1. String - a simple string value (currentely unused)
+2. Scalar - a simple numeric floating point value
+3. Instant Vector - set of time series containg a single sample for each time series, all sharing the same timestamp
+4. Range Vector - set of time series containing a range of data points over time for each time series.
+
+#### <ins>String</ins>
+
+some random text<br/>
+This is a string<br/>
+
+#### <ins>Scalar</ins>
+
+54.743<br/>
+127.43<br/>
+
+#### <ins>Instant Vector</ins>
+
+Query: node_cpu_seconds_total<br/>
+
+specific metric with all of its unique labels. Every combination of metric and unique labels is going to be one time series.
+
+Each time series return value. it's going to return one `single point` sample for each time series, and they are all going to be at the same exact timestamp.
+
+#### <ins>Range Vector</ins>
+
+Query: node_cpu_seconds_total[3m]<br/>
+
+You will get more than `one TimeStamp Values`.
+
+### Selectors
+
+A query with just the metric name will return all time series with that metric.
 
 
+### Matchers
+
+What if we only want to return a subset of time series for a metric.
+
+```
+Label Matchers
+
+= Equality Matcher - Exact match on Label value
+!= Negative Equality Matcher - return time series that don't have the label.
+=~ Regular Expression <atcher - matches time series with labels that match regex.
+!~ Negative regular expression matcher
+```
+
+### <ins>Equality Matcher</ins>
+
+Return all time series from node01
+
+```
+node_filesystem_avail_bytes{instance="node01}
+```
+> [!NOTE]
+> instance="node01" will match all time series from node01.
+
+
+### <ins>Negative Equality Matcher</ins>
+
+Return all time series where device is not equal to `tmpfs`.
+
+```
+node_filesystem_avail_bytes{device!="tmpfs"}
+```
+> [!NOTE]
+> != matcher will ensure that only device that ate not `tmpfs`.
+
+### <ins>Regular Expression matcher</ins>
+
+Return all time series where device starts with `/dev/sda` (sda2 & sda3)
+
+```
+node_filesystem_avail_bytes{device=~"/dev/sda.*"}
+```
+> [!NOTE]
+> To Match anything that starts with /dev/sda, a regex dev/sda.* will need to be used.
+
+> [!TIP]
+> [REGEX TIPS](https://github.com/google/re2/wiki/syntax)
+
+### <ins>Negative Equality Matcher</ins>
+
+Return all time series where mount point does not start with `/boot`.
+
+```
+node_filesystem_avail_bytes{mountpoint!~/boot.*"}
+```
+
+> [!NOTE]
+> To match anything that starts with "/boot", a regex "/boot.*" will need to be used.
+
+### Multiple Selectors
+
+Return all time series from node1 without a `device=tmpfs`
+
+```
+node_filesystem_avail_bytes{instance="node01",device!="tmpfs"}
+```
+
+> [!NOTE]
+> Multiple selectors can be used by separating them by a comma
+
+### Range Vector Selectors
+
+Returns all the values for a metrics over a period of time.
+
+```
+node_arp_entries{instance="node1"}[2m]
+```
+
+>[!NOTE]
+> Returns node_arp_entries metric data for the past 2 minutes
 
