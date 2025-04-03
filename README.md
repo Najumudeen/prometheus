@@ -9,10 +9,17 @@
 ## Table Of Content
 
 - [Prometheus main components](#prometheus-main-components)
+    - [Prometheus Targets](#prometheus-targets)
+    - [Pull Metrics](#pull-metrics)
+    - [Pushgateway](#pushgateway)
+    - [Service Discovery](#service-discovery)
     - [Service Discovery](#service-discovery)
     - [Discovery Targets](#discovery-targets)
     - [Collecting Metrics](#collecting-metrics)
     - [Exporters](#exporters)
+    - [Client Libraries](#client-libraries)
+    - [Pull Based Model](#pull-based-model)
+- [Authentication & Encryption](#authentication-and-encryption)
 
 ## Prometheus main components
 
@@ -20,18 +27,20 @@
 2. `TSDB` : Stroes metrics data
 3. `HTTP Server` : Accepts PromQL Query
 
-Exporters => Prometheus Targets
+### Prometheus Targets
 
-Pull Metrics
+### Pull Metrics
 
-Pushgateway => Short lived Jobs
+### Pushgateway 
 
-## Service Discovery
+Short lived Jobs
+
+### Service Discovery
 
   - kubernetes
   * EC2
 
-## Discovery Targets
+### Discovery Targets
 
 it's used to generate alerts. Not reponsile for set alerts
 
@@ -39,14 +48,14 @@ push alerts
 
 it's sent alerts to alertmanager and alertmanager send notification to slack.
 
-## Collecting Metrics
+### Collecting Metrics
 
 Promethues collects metrics by sending http requests to /metrics endpoint of each target.
 Prometheues can be configured to use a different path other then /metrics.
 Prometheues send http_request to Targets / metrics
 
 
-## Exporters
+### Exporters
 
 Most Systems by default don't collect metrics and expose them on an HTTP endpoint to be consumed by a prometheus server.
 Exporter collect metrics and expose them in a format Prometheus expects.
@@ -65,7 +74,7 @@ Prometheus has several native exporters
 |  HAProxy                       |
 
 
-## Client Libraries
+### Client Libraries
 
 Can we monitror application metrics
 
@@ -84,7 +93,7 @@ Prometheus comes with client libraries that allow you to expose any application 
 |      Rust                  |
 
 
-## Pull Based Model
+### Pull Based Model
 
 Prometeus needs to have a list of all targets it should scrape.
 
