@@ -13,13 +13,20 @@
     - [Pull Metrics](#pull-metrics)
     - [Pushgateway](#pushgateway)
     - [Service Discovery](#service-discovery)
-    - [Service Discovery](#service-discovery)
     - [Discovery Targets](#discovery-targets)
     - [Collecting Metrics](#collecting-metrics)
     - [Exporters](#exporters)
     - [Client Libraries](#client-libraries)
     - [Pull Based Model](#pull-based-model)
-- [Authentication & Encryption](#authentication-and-encryption)
+- [Authentication and Encryption](#authentication-and-encryption)
+- [Create node exporter service file](#create-node-exporter-service-file)
+- [Use scp to copy the file over](#use-scp-to-copy-the-file-over)
+- [Generate Hash Password](#generate-hash-password)
+- [Hashing](#hashing)
+- [Use Preferred Programming Language](#use-preferred-programming-language)
+- [Prometheus Metrics](#prometheus-metrics)
+- [Metric Attributes](#metric-attributes)
+    - [Metrics Type](#metrics-type)
 
 ## Prometheus main components
 
@@ -99,7 +106,7 @@ Prometeus needs to have a list of all targets it should scrape.
 
 Prometues  <====>  target
 
-## Authentication & Encryption
+## Authentication and Encryption
 
 Encypt the packets.
 
@@ -165,15 +172,15 @@ curl -k https://localhost:9100/metrics
 
 Error will gone
 
-## Prometheus TLS Config
+Prometheus TLS Config
 
 First thing, you have to copy node_exporter.crt Prometheus Server
 
-### Use scp to copy the file over
+## Use scp to copy the file over
 
 scp username:password@node:/etc/node_exporter/node_exporter.crt /etc/prometheus
 
-### change the ownership of the file
+change the ownership of the file
 
 chown prometheus:prometheus node_exporter.crt
 
@@ -195,11 +202,11 @@ scrape_configs:
 systemctl restart prometheus
 ```
 
-## Prometheus Authentication
+Prometheus Authentication
 
-### Generate Hash Password
+## Generate Hash Password
 
-### Hashing
+## Hashing
 
 Install apache2-utils or httpd-tools
 
@@ -274,7 +281,7 @@ systemctl restart prometheus
    node_cpu_seconds_total{cpu="3",mode="idle"} 258202.86
 ```
 
-## Timestamp
+### Timestamp
 
 when Prometheus scraps a target and retrieves metrics, it also stores the time at which the metric was scraped as well.
 
@@ -282,7 +289,7 @@ The time stamp will look like this: `1668215300`
 
 This is called a unix timestamp, which is the number of seconds that have elapsed since `Epoch(January 1st 1970 UTC)`.
 
-## Prometheus Time Series
+### Prometheus Time Series
 
 Stream of timestamped values sharing the same metric and set of labels.
 
