@@ -27,6 +27,10 @@
 - [Prometheus Metrics](#prometheus-metrics)
 - [Metric Attributes](#metric-attributes)
     - [Metrics Type](#metrics-type)
+    - [Metrics Rules[(#metrics-rules)
+- [How Setup Prometheus on Docker container](#how-setup-prometheus-on-docker-container)
+- [What is Promtools](#what-is-promtools)
+- [PromQL](#promql)
 
 ## Prometheus main components
 
@@ -374,7 +378,7 @@ May contain ASCII letters, numbers, underscores, and colons.<br/>
 Must match the regex [a-zA-Z_:][a-zA-Z0-9_:]*<br/>
 Colons are reserved only for recording rules<br/>
 
-#### Labels
+#### <ins>Labels</ins>
 
 labels are Key-Value pairs associated with a metric.<br/>
 Allows you to split up a metric by a specified criteria<br/>
@@ -405,7 +409,7 @@ requests_total{path=/cart}<br/>
 requests_total{path=/orders}<br/>
 
 
-### Multiple Labels
+### <ins>Multiple Labels</ins>
 
 paricular endpoint with multiple HTTP methods calls
 
@@ -414,7 +418,7 @@ requests_total{path=/auth,method=post}<br/>
 requests_total{path=/auth,method=patch}<br/>
 requests_total{path=/auth,method=delete}<br/>
 
-### Internal Labels
+### <ins>Internal Labels</ins>
 
 Metric name is just another label
 
@@ -429,7 +433,7 @@ node_boot_time_seconds{instance="192.168.1.168:9100",job="node"}<br/>
 Here instance is represent targets and job is job_name in the config.yaml file.<br/>
 Each unique combination of metrics & labels is a separate time series.<br/>
 
-### How Setup Prometheus on Docker container?
+## How Setup Prometheus on Docker container
 
 ```
 docker run -d /path-to/prometheus-docker.yml:/etc/prometheus/prometheus.yml -p 9090:9090 prom/prometheus
@@ -437,7 +441,7 @@ docker run -d /path-to/prometheus-docker.yml:/etc/prometheus/prometheus.yml -p 9
 
 Default port Prometheus listen on 9090.
 
-### What is Promtools?
+## What is Promtools
 
 Promtools is a utility tool shipped with Prometheus that can be used to:
 
@@ -468,7 +472,7 @@ As we progress through this course, we will cover all of the other features prom
 Monitoing Container with `cadvisor` 
 
 
-### PromQL
+## PromQL
 
 What is PromQL?
 
