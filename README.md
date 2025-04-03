@@ -28,12 +28,14 @@
 - [Metric Attributes](#metric-attributes)
     - [Metrics Type](#metrics-type)
     - [Metrics Rules](#metrics-rules)
+    - [Labels](#labels)
 - [How Setup Prometheus on Docker container](#how-setup-prometheus-on-docker-container)
 - [What is Promtools](#what-is-promtools)
 - [PromQL](#promql)
     - [PromQL Data Types](#promql-data-types)
     - [Selectors](#selectors)
     - [Matchers](#matchers)
+    - [Operators](#operators)
 - [Aggregation](#aggregation)
       
 
@@ -121,7 +123,7 @@ Encypt the packets.
 
 Node Exporter TLS
 
-Using open SSL to generate self-signed certificates or use encrpyt or veersion
+Using open SSL to generate self-signed certificates or use encrpyt or version
 
 ```
 sudo openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout node_exporter.key -out node_exporter.crt -subj "/C=US/ST=California/L=Oakland/O=MyOrg/CN=localhost" -addext "subjectAltName = DNS:localhost"
@@ -383,7 +385,7 @@ May contain ASCII letters, numbers, underscores, and colons.<br/>
 Must match the regex [a-zA-Z_:][a-zA-Z0-9_:]*<br/>
 Colons are reserved only for recording rules<br/>
 
-#### <ins>Labels</ins>
+### Labels
 
 labels are Key-Value pairs associated with a metric.<br/>
 Allows you to split up a metric by a specified criteria<br/>
@@ -431,11 +433,14 @@ Metric name is just another label
 
 label surrounded by two underscore are considered internal to prometheus.<br/>
 
-### Labels
+Label Example:
 
-Every metric is assigned 2 labels by default(instance and job)<br/>
+Every metric is assigned 2 labels by default `(instance and job)`<br/>
+
 node_boot_time_seconds{instance="192.168.1.168:9100",job="node"}<br/>
+
 Here instance is represent targets and job is job_name in the config.yaml file.<br/>
+
 Each unique combination of metrics & labels is a separate time series.<br/>
 
 ## How Setup Prometheus on Docker container
@@ -691,6 +696,8 @@ Which of the following queries will return the 1h ago available memory bytes on 
 ```
 node_memory_MemAvailable_bytes{instance="node01:9100"} offset 1h
 ```
+## Operators
+
 ### Arithmetic Operators
 
 Arithmetic operators provide the ability to perform basic math operations.
