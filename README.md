@@ -598,3 +598,71 @@ node_arp_entries{instance="node1"}[2m]
 >[!NOTE]
 > Returns node_arp_entries metric data for the past 2 minutes
 
+### Offset Modifiers 
+
+when performing a query, it returns the current value of a metric
+
+```
+node_memory_Active_bytes{instance="node01"}
+```
+
+To get historic data use an `offset modifier` after the label matching
+
+You can go and find back in time?
+
+```
+node_memory_Active_bytes{instance="node01"}offset 5m
+```
+22259302 Value 5 minutes ago
+
+### Time units
+
+|    Suffix        |    Meaning           |
+------------------------------------------
+| ms               |    Milliseconds      |
+| s                |    Seconds           |
+| m                |    Minutes           |
+| h                |    Hours             |
+| d                |    Days              |
+| w                |    Weeks             |
+| y                |    Years, which have 365 days |
+
+####  5 days ago
+
+```
+node_memory_Active_bytes{instance="node01"}offset 5d
+```
+
+#### 2 weeks ago
+```
+node_memory_Active_bytes{instance="node01"}offset 2w
+```
+#### 1.5 hours ago
+```
+node_memory_Active_bytes{instance="node01"}offset 1h30m
+```
+
+#### To go back to a specific point in time use the `@modifier`
+```
+node_memory_Active_bytes{instance="node01"}@1663265188  Unix timestamp
+```
+
+### The offset modifier can be combined with the `@modifier`
+
+```
+node_memory_Active_bytes{instance="node01"}@1663265188 offset 5m     # 5 minutes before
+```
+
+### Order does not matter when combining `@modifier` and `offset modifier`
+
+```
+node_memory_Active_bytes{instance="node01"} offset 5m @1663265188
+```
+
+### The offset and @modifier also work with range vectors
+```
+node_memory_Active_bytes{instance="node01"}[2m] @1663265188 offset 10m
+```
+
+> [!TIP]
+> [EpochConverter](https://www.epochconverter.com/)
