@@ -8,11 +8,11 @@
 
 ## Table Of Content
 
-- [Prometheus main components](#prometheusmaincomponents)
-- [Service Discovery](#servicediscovery)
-- [Discovery Targets](#discoverytargets)
-- [Collecting Metrics](#collectingmetrics)
-- [Exporters](#exporters)
+- [Prometheus main components](#prometheus-main-components)
+    - [Service Discovery](#service-discovery)
+    - [Discovery Targets](#discovery-targets)
+    - [Collecting Metrics](#collecting-metrics)
+    - [Exporters](#exporters)
 
 ## Prometheus main components
 
