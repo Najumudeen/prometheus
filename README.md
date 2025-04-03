@@ -668,3 +668,48 @@ node_memory_Active_bytes{instance="node01"}[2m] @1663265188 offset 10m
 
 > [!TIP]
 > [EpochConverter](https://www.epochconverter.com/)
+
+Which of the following queries will return the 1h ago available memory bytes on node01:9100 host?
+
+```
+node_memory_MemAvailable_bytes{instance="node01:9100"} offset 1h
+```
+
+### Arithmetic Operators
+
+Arithmetic operators provide the ability to perform basic math operations.
+
+|    Operator  |    Description   |
+|   :-----     |   :-----         |
+|    +         |   Addition       |
+|    -         |   Subtraction    |
+|    *         |   Multiplication |
+|    /         |   Division       |
+|    %         |   Modulo         |
+|    ^         |   Power          |
+
+> [!TIP]
+> Now PromQL supports several different operators.
+
+The + operator will add x amount to the result
+
+```
+node_memory_Active_bytes{instance="node1"} + 10      Add 10 to result
+````
+
+> [!TIP]
+> By default the amount of active bytes return value in `bytes`. Convert bytes to kilobytes node_memory_Active_bytes / 1024.
+
+### <ins>Comparison Operators</ins>
+
+|    Operator  |    Description   |
+|   :-----     |   :-----         |
+|   ==         |  Equal           |
+|   !==        |  Not Equal       |
+|   >          |  Greater Than    |
+|   <          |  Less than       |
+|   >=         |  Greater or Equal|
+|   <=         | Less or equak    |
+
+
+
