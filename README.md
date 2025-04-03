@@ -674,7 +674,6 @@ Which of the following queries will return the 1h ago available memory bytes on 
 ```
 node_memory_MemAvailable_bytes{instance="node01:9100"} offset 1h
 ```
-
 ### Arithmetic Operators
 
 Arithmetic operators provide the ability to perform basic math operations.
@@ -688,14 +687,15 @@ Arithmetic operators provide the ability to perform basic math operations.
 |    %         |   Modulo         |
 |    ^         |   Power          |
 
+
 > [!TIP]
 > Now PromQL supports several different operators.
 
-The + operator will add x amount to the result
+The `+` operator will add x amount to the result
 
 ```
-node_memory_Active_bytes{instance="node1"} + 10      Add 10 to result
-````
+node_memory_Active_bytes{instance="node1"} + 10         Add 10 to result
+```
 
 > [!TIP]
 > By default the amount of active bytes return value in `bytes`. Convert bytes to kilobytes node_memory_Active_bytes / 1024.
@@ -711,5 +711,197 @@ node_memory_Active_bytes{instance="node1"} + 10      Add 10 to result
 |   >=         |  Greater or Equal|
 |   <=         | Less or equak    |
 
+<ins>Filter result for anything grater than 100</ins>
+
+```
+node_network_flags > 100
+```
+
+<ins>Filter all interfaces that have received 220 or greater netwrok packets.</ins>
+
+```
+node_network_receive_packets_total >= 220
+```
+
+<ins>Bool Operator can be used to return a `true(1)` or `false(0)` result. To find which filesystems have less
+than 1000 bytes available:</ins>
+
+```
+node_filesystem_avail_bytes < bool 1000   result 1 or 0
+```
+
+> [!TIP]
+> Bool Operators are mostly used to generating alerts
 
 
+### Binary operator precedence
+
+When an PromQL expression has multiple binary operators, they follow an `order of precedence`, from highest to lowest
+
+1. `^`
+2. `*, /, %, atan2`
+3. `+, -`
+4. `==, !=, <=, <, >=, >`
+5. `and, unless`
+6. `or`
+
+Operators on the same precedence level are `left-associative`.
+
+For Example, 2 * 3 % 2 is equivalent to ( 2 * 3) % 2
+
+However `^` is `right associative`, so 2 ^ 3 ^ 2 is equivalent to 2 ^ (3 ^ 2)
+
+### Logical Operators
+
+PromQL has 3 logical operators
+
+1. `OR`
+2. `AND`
+3. `UNLESS`
+
+### <ins>AND Operator</ins>
+
+Return all time series greater than 1000 and less than 3000
+
+```
+node_filesystem_avail_bytes > 1000 `and` node_filesystem_avail_bytes < 3000
+```
+
+### <ins>OR Operator</ins>
+
+Return all time series less than 500 or greater than 70000
+
+```
+node_filesystem_avail_bytes < 500 `or` node_filesystem_avail_bytes > 70000
+```
+
+### <ins>UNLESS Operator</ins>
+
+Unless operator results in a vector consisting of elements on the left side for which there are no elements on the right side.
+
+Return all vectors greater than 1000 unless they are greater than 30000
+
+```
+node_filesystem_avail_bytes > 1000 `unless` node_filesystem_avail_bytes > 30000
+```
+
+### Vector Matching Keywords
+
+Operators between and `instant vectors` and `scalars`.
+
+```
+node_filesystem_avail_bytes < 1000      instant vectors is `node_filesystem_avail_bytes` and `1000` is scalars
+``` 
+
+Operatos between and `2 instant vectros`
+
+```
+node_filesystem_avail_bytes / node_filesystem_size_bytes * 100   return percentage that's free 50
+```
+
+different types of vector matching
+
+1. `One-To-One`
+2. `One-To-Many/Many-To-One`
+
+Samples with exactly the same labels get matched together
+
+```
+node_filesystem_avail_bytes{instance="node01",job="node",mountpoint="/home"}
+node_filesystem_size_byte{instance="node01",job="node",mountpoint="/home"}
+```
+> [!TIP]
+> All labels must be same for samples to match
+
+There may be certain instances where an operation needs to be performed on 2 vectors with `differing labels`.
+
+```
+http_erros
+http_erros{method="get", code="500"}      40
+
+http_requests
+http_requests{method="get"}               421
+
+2 labels: {method, code}          1 label: {method}
+http_errors{code="500"}      /    http_requests
+```
+> [!WARNING]
+> If we try to perform this query we're not going to get any results. `NO MATCH`
+
+<ins>Solution</ins>
+
+`Ignoring keyword` can br used to "ignore" an labels to ensure there is a match between 2 vectors.
+
+```
+http_erros
+http_erros{method="get", code="500"}      40
+
+http_requests
+http_requests{method="get"}               421
+
+http_errors{code="500"}      /    ignoring(code) http_requests
+{method="get"} 0.0950              // 40 / 421
+
+```
+
+Ignoring keyword is used to ignore a label when matching, the `on` keyword is to specify exact list of labels to match on
+
+```
+http_erros
+http_erros{method="get", code="500"}      40
+
+http_requests
+http_requests{method="get"}               421
+
+http_errors{code="500"}      /    ignoring(code) http_requests
+                          or
+http_errors{code="500"}      /    on(method) http_requests
+
+List of all labels to match on
+```
+             
+`One-To-One vector matching` - Every element in the vector on the left of the operator tries to find a single matching element on the right
+
+```
+
+{cpu=0,mode=idle} 2           {cpu=0,mode=idle} 4          {cpu=0,mode=idle} 6
+{cpu=0,mode=user} 5           {cpu=0,mode=user} 6          {cpu=0,mode=user} 11
+{cpu=0,mode=user} 1      +    {cpu=0,mode=user} 3      =   {cpu=0,mode=user} 4
+{cpu=0,mode=user} 7           {cpu=0,mode=user} 3          {cpu=0,mode=user} 10
+  
+       Vector1                      Vector2
+
+```
+
+`Many-To-One vector matching` - each vector elements on the one side can match with multiple elements on the many side
+
+```
+
+#### group_left
+
+     Many                                  One
+
+{error=400, path=/cats} 2                                                 {error=400, path=/cats} 4
+{error=500, path=/cats} 5                                                 {error=500, path=/cats} 7 
+{error=400, path=/dogs} 1        +        {path=/cats} 2          =       {error=400, path=/dogs} 8
+{error=500, path=/dogs} 7                 {path=/dogs} 7                   {error=500, path=/dogs} 14
+
+     http_errors              +    on(path)  `group_left` http_requests
+
+```
+
+### group_right
+
+Group_right is the opposite of group_left, tells PromQL that elements from the left side are now matched with multiple elements from the right.
+
+```
+
+ One                                  Many
+                                  {error=400, path=/cats} 2            {error=400, path=/cats} 4
+ {path=/cats} 2                   {error=500, path=/cats} 5            {error=500, path=/cats} 7 
+ {path=/dogs} 7           +       {error=400, path=/dogs} 1      =     {error=400, path=/dogs} 8
+                                  {error=500, path=/dogs} 7            {error=500, path=/dogs} 14
+
+  http_requests           +     on(path)  group_right http_reqeusts
+
+  ```
