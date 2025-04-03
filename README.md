@@ -905,3 +905,83 @@ Group_right is the opposite of group_left, tells PromQL that elements from the l
   http_requests           +     on(path)  group_right http_reqeusts
 
   ```
+
+  ### Aggregation
+
+  Aggregation operators, allow you to take an instant vector and aggregate its elements, resulting in a new instant vector, with fewer elements.
+
+|  Aggregator  |   Description                                               |
+|   :-----     |   :-----                                                    |
+|  Sum         |   Calculate sum over dimensions                             |
+|  Min         |   Select minimum over dimensions                            |
+|  Max         |   Select maximum over dimensions                            |
+|  Avg         |   Average over dimensions                                   |
+|  Group       |   All values in the resulting vector are 1                  |
+|  Stddev      |   Calculate population standard deviations over dimensions  |
+|  Stdvar      |   Calculate population standard variance over dimensions    |
+|  Count       |   Count number of elements in the vector                    |
+|  Count_values|   Count number of elements with same value                  |
+|  Bottomk     |   Smallest k elements by sample value                       |
+|  Topk        |   Largest k elements by sample value                        |
+|  Quantile    |   calculate -quantile (0 <= p <= 1) over dimensions         |
+
+```
+
+http_requests
+
+sum(http_requests)
+
+max(http_requests)
+
+avg(http_requests)
+
+```
+
+### by clause
+
+The `by` clause allows you to choose which labels to aggregate along
+
+```
+$ http_requests
+http_requests(method="get", pah="/auth") 3
+http_requests(method="post", pah="/auth") 1
+
+$ sum by(path) (http_requests)
+{path="/auth"} 4  // 3 + 1
+```
+
+```
+$ http_requests
+http_requests(method="get", pah="/auth") 3
+http_requests(method="get", pah="/auth") 1
+
+$ sum by(method) (http_requests)
+{method="get"} 4  // 3 + 1
+```
+
+Get the request per node
+
+```
+sum by(instance) (http_requests)
+```
+
+### without
+
+The `without` keyword does the opposite of `by` and tells the query which labels not to include in the aggregation.
+
+```
+$ http_requests
+http_requests{method="get", path="/auth", instance="node1"}    3
+http_requests{method="post", path="/auth", instance="node1"}   1
+
+$ sum without(path) (http_requests)
+{instance="node01", method="get"} 3
+{instance="node01", method="post"} 1
+```
+
+Aggregate on every label except `path`. The equivalent to `by(instance, method)`
+
+```
+sum by(instance, cpu) (node_cpu_seconds_total)
+sum without(cpu, mode) (node_cpu_seconds_total)
+```
