@@ -8,6 +8,10 @@
 
 ## Table Of Content
 
+- [Prometheus main components](#prometheusmaincomponents)
+- [Service Discovery](#servicediscovery)
+- [Discovery Targets](#discoverytargets)
+- [Collecting Metrics](#collectingmetrics)
 - [Exporters](#exporters)
 
 ## Prometheus main components
@@ -22,7 +26,7 @@ Pull Metrics
 
 Pushgateway => Short lived Jobs
 
-## Service Discovery:
+## Service Discovery
 
   - kubernetes
   * EC2
